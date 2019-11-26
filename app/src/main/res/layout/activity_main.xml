@@ -9,11 +9,13 @@
     android:padding="50dp"
     tools:context=".MainActivity">
 
+
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Enter Check-in Date: "
-        android:textSize="28dp"
+        android:textSize="20dp"
         android:id="@+id/tvIDate"
         android:layout_marginBottom="18dp"
         />
@@ -21,7 +23,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Enter Check out Date: "
-        android:textSize="28dp"
+        android:textSize="20dp"
         android:id="@+id/tvODate"
         android:layout_marginBottom="18dp"
         />
@@ -29,7 +31,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Select Room Type "
-        android:textSize="28dp"
+        android:textSize="20dp"
         android:layout_marginBottom="18dp"
         />
     <Spinner
@@ -41,7 +43,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Adult  Children  Rooms"
-        android:textSize="28sp"/>
+        android:layout_gravity="center"
+        android:textSize="20sp"/>
     
     <RelativeLayout
         android:layout_width="match_parent"
@@ -49,21 +52,22 @@
         android:layout_gravity="center">
 
         <EditText
-            android:layout_width="55dp"
+            android:layout_width="50dp"
             android:layout_height="wrap_content"
             android:id="@+id/idAdult"
+            android:layout_marginLeft="50dp"
             />
         <EditText
             android:layout_width="55dp"
             android:layout_height="wrap_content"
             android:id="@+id/idChildren"
-            android:layout_marginLeft="111dp"
+            android:layout_marginLeft="121dp"
             />
         <EditText
             android:layout_width="55dp"
             android:layout_height="wrap_content"
             android:id="@+id/idRoom"
-            android:layout_marginLeft="210dp"
+            android:layout_marginLeft="200dp"
             />
 
     </RelativeLayout>
@@ -72,7 +76,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Calculate"
-        android:textSize="30dp"
+        android:textSize="22dp"
         android:id="@+id/btnSave"
         android:layout_marginTop="20dp"
         android:layout_gravity="center"/>
@@ -81,20 +85,20 @@
         android:layout_height="wrap_content"
         android:textSize="27sp"
         android:text="Total : "
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="20dp"
         android:id="@+id/txtTotal"/>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="27sp"
+        android:textSize="20sp"
         android:text="VAT(13%) : "
         android:layout_marginTop="10dp"
         android:id="@+id/txtVat"/>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="27sp"
+        android:textSize="20sp"
         android:text="Grand Total : "
         android:layout_marginTop="10dp"
         android:id="@+id/txtGTotal"/>

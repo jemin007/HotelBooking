@@ -25,10 +25,12 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
      EditText idAdult, idChildren, idRoom;
      Button btnSave;
     Date CheckIn, CheckOut;
-    Integer total;
+    double total;
     double vat;
     double gtotal;
-    Integer numofday,roomcost,numofroom;
+    double numofday;
+    Integer roomcost;
+    Integer numofroom;
     AlertDialog.Builder builder;
 
     @Override
@@ -77,30 +79,12 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
          btnSave.setOnClickListener(new View.OnClickListener() {
              @Override
              public void onClick(View v) {
-                if (tvSpinner.getSelectedItem().toString() == "Deluxe - 4000") {
-                    roomcost = 4000;}
-                    else if (tvSpinner.getSelectedItem().toString() == "Residental - 5000"){
-                     roomcost = 5000;
-                    }
-                    else if (tvSpinner.getSelectedItem().toString() == "Premium - 6000"){
-                        roomcost = 6000;
-                }
+                 if (CheckIn.before(CheckOut)) {
+                     numofday = Double.parseDouble(CheckDate());
+                     CalculateGross();
+                 }
 
-
-
-                    numofroom = Integer.parseInt(idRoom.getText().toString());
-                    total = numofday*roomcost*numofroom;
-                    vat = (0.13 * total);
-                    gtotal = total + vat;
-
-                 String setTotal = "Total : " + total;
-                 String setVat = "Vat (13%) : " + vat;
-                 String setGrandTotal = "Gross Total : " + gtotal;
-                 txtTotal.setText(setTotal);
-                 txtVat.setText(setVat);
-                 txtGTotal.setText(setGrandTotal);
-
-                }
+             }
 
          });
 
@@ -177,7 +161,54 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
 
 //--------------------End of Check out
 
+    private String CheckDate() {
+        Calendar cCal = Calendar.getInstance();
+        cCal.setTime(CheckIn);
+        int cYear = cCal.get(Calendar.YEAR);
+        int cMonth = cCal.get(Calendar.MONTH);
+        int cDay = cCal.get(Calendar.DAY_OF_MONTH);
 
+        Calendar eCal = Calendar.getInstance();
+        eCal.setTime(CheckOut);
+        int eYear = eCal.get(Calendar.YEAR);
+        int eMonth = eCal.get(Calendar.MONTH);
+        int eDay = eCal.get(Calendar.DAY_OF_MONTH);
+
+        Calendar date1 = Calendar.getInstance();
+        Calendar date2 = Calendar.getInstance();
+
+        date1.clear();
+        date1.set(cYear, cMonth, cDay);
+        date2.clear();
+        date2.set(eYear, eMonth, eDay);
+
+        long diff = date2.getTimeInMillis() - date1.getTimeInMillis();
+        float dayCount = (float) diff / (24 * 60 * 60 * 1000);
+        return dayCount + "";
+    }
+
+    private void CalculateGross() {
+        if (tvSpinner.getSelectedItem().toString() == "Deluxe - 4000") {
+            roomcost = 4000;
+        } else if (tvSpinner.getSelectedItem().toString() == "Residental - 5000") {
+            roomcost = 5000;
+        } else if (tvSpinner.getSelectedItem().toString() == "Premium - 6000") {
+            roomcost = 6000;
+        }
+
+        numofroom = Integer.parseInt(idRoom.getText().toString());
+        total = numofday * roomcost * numofroom;
+        vat = (0.13 * total);
+        gtotal = total + vat;
+
+        String setTotal = "Total : " + total;
+        String setVat = "Vat (13%) : " + vat;
+        String setGrandTotal = "Gross Total : " + gtotal;
+        txtTotal.setText(setTotal);
+        txtVat.setText(setVat);
+        txtGTotal.setText(setGrandTotal);
+
+    }
 
 
 }
