@@ -5,20 +5,29 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 public class MainActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener{
 
-    private TextView tvIDate, tvODate, txtTotal, txtVat, txtGTotal;
-    private Spinner tvSpinner;
-    private EditText idAdult, idChildren, idRoom;
-    private Button btnSave;
+     TextView tvIDate, tvODate, txtTotal, txtVat, txtGTotal;
+     Spinner tvSpinner;
+     EditText idAdult, idChildren, idRoom;
+     Button btnSave;
+    Date CheckIn, CheckOut;
+    Integer total;
+    double vat;
+    double gtotal;
+    Integer numofday,roomcost,numofroom;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,55 +50,107 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
         tvIDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                loadDatePicker();
+                dateCheckin();
             }
         });
+
+        tvODate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dateCheckout();
+            }
+        });
+
+        //Spinner
+
+        String RoomType[] = {"Deluxe - 4000", "Residental - 5000", "Premium - 6000"};
+        ArrayAdapter adapter = new ArrayAdapter<>(
+                this,
+                android.R.layout.simple_list_item_1,
+                RoomType
+        );
+        tvSpinner.setAdapter(adapter);
+        //------------------------Spinner End----------------
+        //Button on set
+         btnSave.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View v) {
+                if (tvSpinner.getSelectedItem().toString() == "Deluxe - 4000") {
+                    roomcost = 4000;}
+                    else if (tvSpinner.getSelectedItem().toString() == "Residental - 5000"){
+                     roomcost = 5000;
+                    }
+                    else if (tvSpinner.getSelectedItem().toString() == "Premium - 6000"){
+                        roomcost = 6000;
+                }
+                    numofroom = Integer.parseInt(idRoom.getText().toString());
+                    total = numofday*roomcost*numofroom;
+                    vat = (0.13 * total);
+                    gtotal = total + vat;
+
+                 String setTotal = "Total : " + total;
+                 String setVat = "Vat (13%) : " + vat;
+                 String setGrandTotal = "Gross Total : " + gtotal;
+                 txtTotal.setText(setTotal);
+                 txtVat.setText(setVat);
+                 txtGTotal.setText(setGrandTotal);
+
+                }
+
+         });
+
     }
 
     //CHECHKIN DATE
-    private void loadDatePicker(){
+    private void dateCheckin(){
         //Set it as current date of today
 
-        final Calendar c = Calendar.getInstance();
-        int yearOne = c.get(Calendar.YEAR);
-        int dayOne = c.get(Calendar.DAY_OF_MONTH);
-        int monthOne = c.get(Calendar.MONTH);
+        final Calendar d1 = Calendar.getInstance();
+        int year = d1.get(Calendar.YEAR);
+        int day = d1.get(Calendar.DAY_OF_MONTH);
+        int month = d1.get(Calendar.MONTH);
 
-        DatePickerDialog datePickerDialog = new DatePickerDialog(
-                this, this, yearOne, monthOne, dayOne);
-        datePickerDialog.show();
+        DatePickerDialog datePickerCheckin = new DatePickerDialog(
+                this, this, year, month, day);
+        datePickerCheckin.show();
     }
-
 
     @Override
-    public void onDateSet(DatePicker view, int yearOne, int monthOfYear, int dayOfMonth) {
-        monthOne++;
-        String date = "Day/Month/Year : " + dayOfMonth + "/" + monthOne + "/" + yearOne;
+    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+        month++;
+        String date = dayOfMonth + "-" + month + "-" + year;
+        SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
+        try {
+            CheckOut = format.parse(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         tvIDate.setText(date);
+
     }
 
+
 //------------END of CheckIn-------------------------------------------------------------------
+
     //CHECKOUT DATE
-    private void loadDatePickerTwo(){
+    private void dateCheckout(){
         //Set it as current date of today
 
-        final Calendar c = Calendar.getInstance();
-        int yearTwo = c.get(Calendar.YEAR);
-        int dayTwo = c.get(Calendar.DAY_OF_MONTH);
-        int monthTwo = c.get(Calendar.MONTH);
+        final Calendar d2 = Calendar.getInstance();
+        int year = d2.get(Calendar.YEAR);
+        int day = d2.get(Calendar.DAY_OF_MONTH);
+        int month = d2.get(Calendar.MONTH);
 
         DatePickerDialog datePickerCheckout = new DatePickerDialog(
-                this, this, yearTwo, monthTwo, dayTwo);
+                this, this, year, month, day);
         datePickerCheckout.show();
     }
 
+//--------------------End of Check out
 
-    @Override
-    public void onDateSet(DatePicker view, int yearTwo, int monthTwo, int dayOfMonth) {
-        monthTwo++;
-        String date = "Day/Month/Year : " + dayOfMonth + "/" + monthTwo + "/" + yearTwo;
-        tvODate.setText(date);
-    }
+
+
+
 }
 
 
