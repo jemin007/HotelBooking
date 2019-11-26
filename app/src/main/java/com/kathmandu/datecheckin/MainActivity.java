@@ -2,6 +2,7 @@ package com.kathmandu.datecheckin;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.view.View;
@@ -28,6 +29,7 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
     double vat;
     double gtotal;
     Integer numofday,roomcost,numofroom;
+    AlertDialog.Builder builder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +85,9 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
                     else if (tvSpinner.getSelectedItem().toString() == "Premium - 6000"){
                         roomcost = 6000;
                 }
+
+
+
                     numofroom = Integer.parseInt(idRoom.getText().toString());
                     total = numofday*roomcost*numofroom;
                     vat = (0.13 * total);
@@ -115,19 +120,7 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
         datePickerCheckin.show();
     }
 
-    @Override
-    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-        month++;
-        String date = dayOfMonth + "-" + month + "-" + year;
-        SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
-        try {
-            CheckOut = format.parse(date);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        tvIDate.setText(date);
 
-    }
 
 
 //------------END of CheckIn-------------------------------------------------------------------
@@ -142,9 +135,45 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
         int month = d2.get(Calendar.MONTH);
 
         DatePickerDialog datePickerCheckout = new DatePickerDialog(
-                this, this, year, month, day);
+                this, new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                month++;
+                String date = dayOfMonth + "-" + month + "-" + year;
+                SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
+                try {
+                    CheckOut = format.parse(date);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                tvODate.setText(date);
+            }
+        }, year, month, day);
         datePickerCheckout.show();
+
+
     }
+
+
+    @Override
+    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+        month = month + 1;
+        String date = dayOfMonth + "-" + month + "-" + year;
+        SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
+        try {
+            CheckIn = format.parse(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        tvIDate.setText(date);
+    }
+
+
+
+
+//    long msDiff = Calendar.getInstance().getTimeInMillis() - testCalendar.getTimeInMillis();
+//    long daysDiff = TimeUnit.MILLISECONDS.toDays(msDiff);
 
 //--------------------End of Check out
 
